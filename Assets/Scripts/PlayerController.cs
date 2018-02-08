@@ -54,5 +54,6 @@ public class PlayerController : MonoBehaviour {
     private void Shot()
     {
         GameObject shot = GameObject.Instantiate(shotPrefab, shotSpawn.position, shotSpawn.rotation);
+        GetComponent<AudioSource>().Play();
     }
 }
