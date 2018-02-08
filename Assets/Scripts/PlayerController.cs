@@ -17,6 +17,19 @@ public class PlayerController : MonoBehaviour {
     public float tilt;
     public Boundary boundary;
 
+    public GameObject shotPrefab;
+    public Transform shotSpawn;
+    public float fireRate;
+    private float nextFire = 0.0f;
+
+    private void Update()
+    {
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Shot();
+        }
+    }
     private void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
@@ -36,5 +49,10 @@ public class PlayerController : MonoBehaviour {
             Mathf.Clamp(position.x, boundary.xMin, boundary.xMax),
             0.0f,
             Mathf.Clamp(position.z, boundary.zMin, boundary.zMax));
+    }
+
+    private void Shot()
+    {
+        GameObject shot = GameObject.Instantiate(shotPrefab, shotSpawn.position, shotSpawn.rotation);
     }
 }
