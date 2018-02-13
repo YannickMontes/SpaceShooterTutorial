@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 {
     private static GameController instance = null;
 
-    public GameObject hazard;
+    public GameObject[] hazards;
     public Vector3 spawnValues;
     public float timeBeforeWavesStart;
     public float spawnHazardWait;
@@ -76,6 +76,7 @@ public class GameController : MonoBehaviour
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
+                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(spawnHazardWait);
             }
