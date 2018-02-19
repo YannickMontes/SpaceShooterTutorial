@@ -4,34 +4,46 @@ using UnityEngine;
 
 public class DestroyByContact : MonoBehaviour
 {
-    public GameObject asteroidExplosionPrefab;
+    public GameObject explosionPrefab;
     public GameObject playerExplosionPrefab;
     public int scoreValue;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsBoundary(other.tag))
+        if (IsBoundary(other) || IsEnemy(other))
         {
             return;
         }
-        if (IsPlayer(other.tag))
+        if (IsPlayer(other))
         {
             GameController.GetInstance().GameOver();
             Instantiate(playerExplosionPrefab, other.transform.position, other.transform.rotation);
         }
+        if(explosionPrefab != null)
+            Instantiate(explosionPrefab, transform.position, transform.rotation);
+
         GameController.GetInstance().AddScore(scoreValue);
-        Instantiate(asteroidExplosionPrefab, transform.position, transform.rotation);
+
         Destroy(other.gameObject);
         Destroy(this.gameObject);
     }
 
-    private bool IsBoundary(string tag)
+    private bool IsBoundary(Collider other)
     {
-        return tag == "Boundary";
+        return other.CompareTag("Boundary");
     }
 
-    private bool IsPlayer(string tag)
+    private bool IsPlayer(Collider other)
     {
-        return tag == "Player";
+        return other.CompareTag("Player");
+    }
+
+    private bool IsEnemy(Collider other)
+    {
+        return other.CompareTag("Enemy");
+    }
+    private bool IsHazard(Collider other)
+    {
+        return other.CompareTag("Hazard");
     }
 }
